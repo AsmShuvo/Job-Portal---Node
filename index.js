@@ -11,6 +11,7 @@ const testRoute = require("./routes/testRoutes");
 const authRoute = require("./routes/authRoutes");
 const errorMiddleware = require("./middlewares/errorMiddleware");
 const testMiddleware = require("./middlewares/testMiddleware");
+const { testPostController } = require("./controllers/testController");
 
 // middlewares
 app.use(express.json());
@@ -22,9 +23,10 @@ app.get("/", (req, res) => {
 });
 // routes
 app.use("/api/v1/auth", authRoute);
+app.use("/test", testRoute);
 
 // validation middleware : must be after routes
-app.use(testMiddleware);
+// app.use(testPostController);
 app.use(errorMiddleware);
 
 app.listen(PORT, async () => {

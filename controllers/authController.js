@@ -5,18 +5,18 @@ const registerController = async (req, res, next) => {
     const { name, email, password } = req.body;
     // validate
     if (!name) {
-      return next("name is required");
+      next("name is required");
     }
     if (!email) {
-      return next("email is required");
+      next("email is required");
     }
     if (!password) {
-      return next("password is required");
+      next("password is required");
     }
 
     const existingUser = await userModel.findOne({ email });
     if (existingUser) {
-      return next("Email already registered, Please login");
+      next("Email already registered, Please login");
     }
     const user = await userModel.create({ name, password, email });
 
@@ -71,3 +71,5 @@ const loginController = async (req, res, next) => {
 };
 
 module.exports = { registerController, loginController };
+
+

@@ -1,0 +1,3 @@
+### authorization with JWT
+-> we have created token while register/login
+-> when frontend will send login response , backend will check the jwt and respond according to login
