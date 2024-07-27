@@ -1,31 +1,22 @@
 const userModel = require("../models/userModel");
 
-const registerController = async (req, res) => {
+const registerController = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
     // validate
     if (!name) {
-      return res
-        .status(400)
-        .send({ success: false, message: "Please provide name" });
+      next("name is required");
     }
     if (!email) {
-      return res
-        .status(400)
-        .send({ success: false, message: "Please provide email" });
+      next("email is required");
     }
     if (!password) {
-      return res
-        .status(400)
-        .send({ success: false, message: "Please provide password" });
+      next("password is required");
     }
 
     const existingUser = await userModel.findOne({ email });
     if (existingUser) {
-      return res.status(200).send({
-        success: false,
-        message: "Email already registered, Please login",
-      });
+      next("Email already registered, Please login");
     }
     const user = await userModel.create({ name, password, email });
     res.status(201).send({
@@ -34,12 +25,7 @@ const registerController = async (req, res) => {
       user,
     });
   } catch (error) {
-    console.log(error);
-    res.status(400).send({
-      message: "Error in Register controller",
-      success: false,
-      error,
-    });
+    next(error);
   }
 };
 
