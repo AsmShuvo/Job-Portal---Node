@@ -19,10 +19,20 @@ const registerController = async (req, res, next) => {
       next("Email already registered, Please login");
     }
     const user = await userModel.create({ name, password, email });
+
+    const token = user.createJWT();
+
     res.status(201).send({
       success: true,
       message: "User Created successfully",
-      user,
+      user: {
+        //should not send password as response
+        email: user.email,
+        name: user.name,
+        lastName: user.lastName,
+        location: user.location,
+      },
+      token,
     });
   } catch (error) {
     next(error);
