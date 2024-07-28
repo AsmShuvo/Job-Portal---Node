@@ -9,6 +9,7 @@ require("dotenv").config();
 require("express-async-errors");
 const testRoute = require("./routes/testRoutes");
 const authRoute = require("./routes/authRoutes");
+const userRoute = require("./routes/userRoute");
 const errorMiddleware = require("./middlewares/errorMiddleware");
 const testMiddleware = require("./middlewares/testMiddleware");
 const { testPostController } = require("./controllers/testController");
@@ -23,6 +24,7 @@ app.get("/", (req, res) => {
 });
 // routes
 app.use("/api/v1/auth", authRoute);
+app.use("/api/v1/user", userRoute);
 app.use("/test", testRoute);
 
 // validation middleware : must be after routes

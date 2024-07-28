@@ -35,6 +35,7 @@ const userSchema = new mongoose.Schema(
 );
 // hashing the password
 userSchema.pre("save", async function () {
+  if (!this.isModified) return; // if user is not modified during update so no need to save just retrun
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 });
