@@ -36,7 +36,7 @@ const updateJobs = async (req, res, next) => {
   if (!job) {
     next("No jobs found with this id");
   }
-  if (! req.user.userId === job.createdBy.toString()) {
+  if (req.user.userId != job.createdBy.toString()) {
     return next("You don't have permission to update this job");
   }
   const updatedJob = await jobsModel.findOneAndUpdate({ _id: id }, req.body, {
@@ -46,4 +46,17 @@ const updateJobs = async (req, res, next) => {
   res.status(200).json({ updatedJob });
 };
 
-module.exports = { createJob, getJobs, updateJobs };
+const deleteJob = async (req, res, next) => {
+  const { id } = req.params;
+  const job = await jobsModel.findOne({ _id: id });
+  if (!job) {
+    next("No job found with this id");
+  }
+  if (req.user.userId != job.createdBy.toString()) {
+    next("You don't have permission to delete this job");
+  }
+  await job.deleteOne();
+  res.status(200).json({ message: "Job Deleted Successfully" });
+};
+
+module.exports = { createJob, getJobs, updateJobs, deleteJob };
